@@ -1,0 +1,49 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using TalentPool.Entities;
+using Newtonsoft.Json;
+using System.Xml;
+using System.Xml.Linq;
+using System.Web.Script.Serialization;
+using System.Runtime.Serialization.Json;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Method1();
+            var result = MyMethodAsync();
+            Console.WriteLine("Finished");
+            Console.ReadLine();
+        }
+
+        static void Method1()
+        {
+            Console.WriteLine("Method 1 over");
+        }
+        public static async Task MyMethodAsync()
+        {
+            Task<int> longRunningTask = LongRunningOperationAsync();
+            // independent work which doesn't need the result of LongRunningOperationAsync can be done here
+
+            //and now we call await on the task 
+            int result = await longRunningTask;
+            //use the result 
+            Console.WriteLine(result);
+        }
+
+        public static async Task<int> LongRunningOperationAsync() // assume we return an int from this long running operation 
+        {
+            await Task.Delay(10000); //10 seconds delay
+            return 1;
+        }
+    }
+}
